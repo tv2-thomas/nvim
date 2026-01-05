@@ -2,6 +2,13 @@ local function au(typ, callback, g, desc)
 	vim.api.nvim_create_autocmd(typ, { callback = callback, group = g, desc = desc })
 end
 
+vim.api.nvim_create_autocmd("VimEnter", {
+	pattern = "*",
+	callback = function()
+		vim.cmd("FzfLua register_ui_select")
+	end,
+})
+
 au('LspAttach', function(ev)
 	local client = vim.lsp.get_client_by_id(ev.data.client_id)
 	if client and client:supports_method('textDocument/completion') then
@@ -29,3 +36,18 @@ au({ 'CursorHold', 'InsertLeave' }, function()
 end, group)
 au('InsertEnter', function() vim.diagnostic.enable(false) end, group)
 au('InsertLeave', function() vim.diagnostic.enable(true) end, group)
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*.zig", "*.zon" },
+	callback = function()
+		vim.lsp.buf.format()
+		vim.lsp.buf.code_action({
+			context = { only = { "source.fixAll" } },
+			apply = true,
+		})
+		vim.lsp.buf.code_action({
+			context = { only = { "source.organizeImports" } },
+			apply = true,
+		})
+	end,
+})

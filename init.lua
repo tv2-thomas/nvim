@@ -8,10 +8,13 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-tree/nvim-web-devicons" },
 	{ src = "https://github.com/ibhagwan/fzf-lua" },
 	{ src = "https://github.com/LuxVim/nvim-luxmotion" },
+	{ src = "https://github.com/L3MON4D3/LuaSnip" },
+	{ src = "https://github.com/rafamadriz/friendly-snippets" },
+	{ src = "https://github.com/Saghen/blink.cmp", name="blink", version = "v1.8.0" },
 })
 
 require "nvim-treesitter.configs".setup({
-	ensure_installed = { "svelte", "typescript", "javascript", "go" },
+	ensure_installed = { "svelte", "typescript", "javascript", "go", "zig" },
 	highlight = { enable = true },
 	sync_install = false,
 	auto_install = true,
